@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import * as THREE from 'three';
 import { Environment } from './Environment';
-import './Home3DText.css';
+import styles from './Home3DText.module.scss';
 
 export const Home3DText = () => {
   useEffect(() => {
     loadEnvironment();
   }, []);
 
-  return <div id='magic'></div>;
+  return <div className={styles.magic} id='magic'></div>;
 };
 
 function loadEnvironment() {
@@ -16,12 +16,12 @@ function loadEnvironment() {
   manager.onLoad = function () {
     new Environment(typo, particle, {
       text: 'Cezar\nCraciun',
-      amount: 1300,
+      amount: 1000,
       particleSize: 1,
       particleColor: 0xffffff,
       textSize: 12,
-      area: 200,
-      ease: 0.05
+      area: 300,
+      ease: 0.1
     });
   };
 
