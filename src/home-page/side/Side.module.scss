@@ -1,0 +1,17 @@
+.side {
+  width: 40px;
+  position: fixed;
+  bottom: 0px;
+  z-index: 10;
+  color: #fff;
+}
+
+.sideLeft {
+  left: 40px;
+  right: auto;
+}
+
+.sideRight {
+  left: auto;
+  right: 40px;
+}

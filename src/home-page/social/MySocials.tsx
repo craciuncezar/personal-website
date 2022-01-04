@@ -1,10 +1,11 @@
 import React from 'react';
+import { Side } from '../side/Side';
 import styles from './MySocials.module.scss';
 
 export const MySocials = () => {
   return (
-    <div className={styles.side}>
-      <ul>
+    <Side position='left'>
+      <ul className={styles.socialList}>
         <li>
           <a
             href='https://github.com/craciuncezar'
@@ -74,6 +75,6 @@ export const MySocials = () => {
           </a>
         </li>
       </ul>
-    </div>
+    </Side>
   );
 };
