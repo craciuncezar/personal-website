@@ -5,16 +5,24 @@ import './Home3DText.css';
 
 export const Home3DText = () => {
   useEffect(() => {
-    preload();
+    loadEnvironment();
   }, []);
 
   return <div id='magic'></div>;
 };
 
-function preload() {
+function loadEnvironment() {
   const manager = new THREE.LoadingManager();
   manager.onLoad = function () {
-    new Environment(typo, particle);
+    new Environment(typo, particle, {
+      text: 'Cezar\nCraciun',
+      amount: 1300,
+      particleSize: 1,
+      particleColor: 0xffffff,
+      textSize: 12,
+      area: 200,
+      ease: 0.05
+    });
   };
 
   let typo: THREE.Font;

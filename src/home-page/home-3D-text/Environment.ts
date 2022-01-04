@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { distance, visibleHeightAtZDepth, visibleWidthAtZDepth } from './utils';
 
 export class Environment {
   private font: THREE.Font;
@@ -9,7 +10,7 @@ export class Environment {
   private camera: THREE.PerspectiveCamera;
   private renderer: THREE.WebGLRenderer;
 
-  constructor(font: THREE.Font, particle: THREE.Texture) {
+  constructor(font: THREE.Font, particle: THREE.Texture, data: Data) {
     this.font = font;
     this.particle = particle;
     this.container = document.querySelector('#magic')!;
@@ -40,7 +41,8 @@ export class Environment {
       this.scene,
       this.font,
       this.particle,
-      this.camera
+      this.camera,
+      data
     );
     this.bindEvents();
   }
@@ -93,7 +95,8 @@ class CreateParticles {
     scene: THREE.Scene,
     font: THREE.Font,
     particleImg: THREE.Texture,
-    camera: THREE.PerspectiveCamera
+    camera: THREE.PerspectiveCamera,
+    data: Data
   ) {
     this.scene = scene;
     this.font = font;
@@ -107,15 +110,7 @@ class CreateParticles {
 
     this.buttom = false;
 
-    this.data = {
-      text: 'Cezar\nCraciun',
-      amount: 1300,
-      particleSize: 1,
-      particleColor: 0xffffff,
-      textSize: 12,
-      area: 200,
-      ease: 0.05
-    };
+    this.data = data;
 
     this.setup();
     this.bindEvents();
@@ -123,8 +118,8 @@ class CreateParticles {
 
   setup() {
     const geometry = new THREE.PlaneGeometry(
-      this.visibleWidthAtZDepth(100, this.camera),
-      this.visibleHeightAtZDepth(100, this.camera)
+      visibleWidthAtZDepth(100, this.camera),
+      visibleHeightAtZDepth(100, this.camera)
     );
     const material = new THREE.MeshBasicMaterial({
       color: 0x00ff00,
@@ -178,7 +173,6 @@ class CreateParticles {
 
       const mx = intersects[0].point.x;
       const my = intersects[0].point.y;
-      const mz = intersects[0].point.z;
 
       for (let i = 0, l = pos.count; i < l; i++) {
         const initX = copy.getX(i);
@@ -205,7 +199,7 @@ class CreateParticles {
         let dx = mx - px;
         let dy = my - py;
 
-        const mouseDistance = this.distance(mx, my, px, py);
+        const mouseDistance = distance(mx, my, px, py);
         let d = (dx = mx - px) * dx + (dy = my - py) * dy;
         const f = -this.data.area / d;
 
@@ -380,24 +374,5 @@ class CreateParticles {
 
     this.geometryCopy = new THREE.BufferGeometry();
     this.geometryCopy.copy(this.particles.geometry);
-  }
-
-  visibleHeightAtZDepth(depth: number, camera: THREE.PerspectiveCamera) {
-    const cameraOffset = camera.position.z;
-    if (depth < cameraOffset) depth -= cameraOffset;
-    else depth += cameraOffset;
-
-    const vFOV = (camera.fov * Math.PI) / 180;
-
-    return 2 * Math.tan(vFOV / 2) * Math.abs(depth);
-  }
-
-  visibleWidthAtZDepth(depth: number, camera: THREE.PerspectiveCamera) {
-    const height = this.visibleHeightAtZDepth(depth, camera);
-    return height * camera.aspect;
-  }
-
-  distance(x1: number, y1: number, x2: number, y2: number) {
-    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
   }
 }
