@@ -1,0 +1,36 @@
+name: Build and Deploy
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
+
+      - uses: pnpm/action-setup@v2.0.1
+        with:
+          version: 6.23.6
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+          cache: 'pnpm'
+
+      - name: Install and Build 🔧
+        run: |
+          pnpm i
+          pnpm run build
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.7
+        with:
+          branch: gh-pages # The branch the action should deploy to.
+          folder: dist # The folder the action should deploy.
