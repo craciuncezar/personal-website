@@ -2,16 +2,8 @@ name: Build and Deploy
 
 on:
   push:
-<<<<<<< Updated upstream
     branches:
       - main
-  pull_request:
-    branches:
-      - main
-    types: [closed]
-=======
-    branches: [main]
->>>>>>> Stashed changes
 
 jobs:
   build-and-deploy:
