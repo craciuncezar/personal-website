@@ -2,8 +2,6 @@ import * as THREE from 'three';
 import { distance, visibleHeightAtZDepth, visibleWidthAtZDepth } from './utils';
 
 export class Environment {
-  private font: THREE.Font;
-  private particle: THREE.Texture;
   private container: HTMLElement;
   private scene: THREE.Scene;
   private createParticles: CreateParticles;
@@ -11,8 +9,6 @@ export class Environment {
   private renderer: THREE.WebGLRenderer;
 
   constructor(font: THREE.Font, particle: THREE.Texture, data: Data) {
-    this.font = font;
-    this.particle = particle;
     this.container = document.querySelector('#magic')!;
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(
@@ -39,8 +35,8 @@ export class Environment {
     });
     this.createParticles = new CreateParticles(
       this.scene,
-      this.font,
-      this.particle,
+      font,
+      particle,
       this.camera,
       data
     );
@@ -104,11 +100,9 @@ class CreateParticles {
     this.camera = camera;
 
     this.raycaster = new THREE.Raycaster();
-    this.mouse = new THREE.Vector2(-200, 200);
+    this.mouse = new THREE.Vector2(0, 0);
 
     this.colorChange = new THREE.Color();
-
-    this.buttom = false;
 
     this.data = data;
 
