@@ -27,3 +27,7 @@ export function visibleWidthAtZDepth(
   const height = visibleHeightAtZDepth(depth, camera);
   return height * camera.aspect;
 }
+
+export function isTouchScreenDevice() {
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+}
