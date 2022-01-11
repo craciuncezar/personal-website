@@ -1,5 +1,10 @@
 import * as THREE from 'three';
-import { distance, visibleHeightAtZDepth, visibleWidthAtZDepth } from './utils';
+import {
+  distance,
+  isTouchScreenDevice,
+  visibleHeightAtZDepth,
+  visibleWidthAtZDepth
+} from './utils';
 
 export class Environment {
   private container: HTMLElement;
@@ -100,7 +105,9 @@ class CreateParticles {
     this.camera = camera;
 
     this.raycaster = new THREE.Raycaster();
-    this.mouse = new THREE.Vector2(0, 0);
+    const isTouchDevice = isTouchScreenDevice();
+    const mousePos = isTouchDevice ? 1 : 0;
+    this.mouse = new THREE.Vector2(mousePos, mousePos);
 
     this.colorChange = new THREE.Color();
 
@@ -159,6 +166,8 @@ class CreateParticles {
   onMouseUp = () => {
     this.buttom = false;
     this.data.ease = 0.05;
+    this.mouse.x = 1;
+    this.mouse.y = 1;
   };
 
   onMouseMove = (event: MouseEvent) => {

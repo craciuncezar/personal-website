@@ -19,7 +19,7 @@ function loadEnvironment() {
       amount: 1000,
       particleSize: 1,
       particleColor: 0xffffff,
-      textSize: 12,
+      textSize: 10,
       area: 300,
       ease: 0.1
     });
