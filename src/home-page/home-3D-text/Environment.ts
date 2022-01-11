@@ -128,11 +128,26 @@ class CreateParticles {
     document.addEventListener('mousedown', (e) => this.onMouseDown(e));
     document.addEventListener('mousemove', (e) => this.onMouseMove(e));
     document.addEventListener('mouseup', () => this.onMouseUp());
+    document.addEventListener('touchstart', (e) => this.onTouchStart(e));
+    document.addEventListener('touchmove', (e) => this.onTouchMove(e));
+    document.addEventListener('touchend', () => this.onMouseUp());
   }
 
   onMouseDown = (event: MouseEvent) => {
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    const vector = new THREE.Vector3(this.mouse.x, this.mouse.y, 0.5);
+    vector.unproject(this.camera);
+
+    this.buttom = true;
+    this.data.ease = 0.01;
+  };
+
+  onTouchStart = (event: TouchEvent) => {
+    const { clientX, clientY } = event.touches[0];
+    this.mouse.x = (clientX / window.innerWidth) * 2 - 1;
+    this.mouse.y = -(clientY / window.innerHeight) * 2 + 1;
 
     const vector = new THREE.Vector3(this.mouse.x, this.mouse.y, 0.5);
     vector.unproject(this.camera);
@@ -149,6 +164,12 @@ class CreateParticles {
   onMouseMove = (event: MouseEvent) => {
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  };
+
+  onTouchMove = (event: TouchEvent) => {
+    const { clientX, clientY } = event.touches[0];
+    this.mouse.x = (clientX / window.innerWidth) * 2 - 1;
+    this.mouse.y = -(clientY / window.innerHeight) * 2 + 1;
   };
 
   render() {
